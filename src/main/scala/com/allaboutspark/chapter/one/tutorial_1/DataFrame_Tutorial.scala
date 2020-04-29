@@ -7,6 +7,10 @@ val dfTags=sparkSession
   .csv("D:\\Study_Materials\\Scala\\AllAboutSpark\\src\\main\\resources\\question_tags_10k.csv")
   .toDF("id","tag")
 
-  dfTags.show(10)
+  dfTags.show(10,truncate = false)
+  val countcsv:Long=dfTags.count()
+  println("Total count is "+countcsv)
+  dfTags.printSchema()
+
 
 }
