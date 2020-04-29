@@ -1,5 +1,5 @@
 package com.allaboutspark.chapter.one.tutorial_1
-object DataFrame_Tutorial extends Context with App{
+object DataFrame_Tutorial_1 extends Context with App{
 val dfTags=sparkSession
   .read
   .option("header",value = true)
