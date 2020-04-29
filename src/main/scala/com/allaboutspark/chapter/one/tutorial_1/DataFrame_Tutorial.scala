@@ -13,4 +13,8 @@ val dfTags=sparkSession
   dfTags.filter("tag=='osx'").show(25)
   val countcsv:Long=dfTags.filter("tag=='osx'").count()
   println("Total count of osx is "+countcsv)
+
+  //SQL like Query
+  dfTags.filter("tag like 's%'").show(10)
+
 }
