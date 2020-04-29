@@ -8,9 +8,9 @@ val dfTags=sparkSession
   .toDF("id","tag")
 
   dfTags.show(10,truncate = false)
-  val countcsv:Long=dfTags.count()
-  println("Total count is "+countcsv)
   dfTags.printSchema()
-
-
+  dfTags.select("tag").show(10) //printing the specific columns of the data frame
+  dfTags.filter("tag=='osx'").show(25)
+  val countcsv:Long=dfTags.filter("tag=='osx'").count()
+  println("Total count of osx is "+countcsv)
 }
