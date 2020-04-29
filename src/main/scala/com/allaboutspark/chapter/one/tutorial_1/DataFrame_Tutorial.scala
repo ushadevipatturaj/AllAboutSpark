@@ -22,4 +22,13 @@ val dfTags=sparkSession
 
   //SQL IN Clause
   dfTags.filter("id in (4,2900)").show()
+
+  //SQL Groupby
+  dfTags.groupBy("tag").count().show(10)
+
+  //SQL Groupby with filter
+  dfTags.groupBy("tag").count().filter("count>5").show(10)
+
+  //SQL Orderby
+  dfTags.groupBy("tag").count().filter("count>5").orderBy("count").show(10)
 }
