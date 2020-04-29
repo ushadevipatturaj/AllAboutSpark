@@ -17,4 +17,7 @@ val dfTags=sparkSession
   //SQL like Query
   dfTags.filter("tag like 's%'").show(10)
 
+  //multi filter chaining
+  dfTags.filter("tag like 'o%'").filter("id==469 or id==8970").show()
+
 }
