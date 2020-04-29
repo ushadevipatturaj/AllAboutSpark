@@ -20,4 +20,6 @@ val dfTags=sparkSession
   //multi filter chaining
   dfTags.filter("tag like 'o%'").filter("id==469 or id==8970").show()
 
+  //SQL IN Clause
+  dfTags.filter("id in (4,2900)").show()
 }
