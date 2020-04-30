@@ -29,5 +29,6 @@ object SparkSQL_Tutorial extends App with Context {
   sparkSession.sql("select tag,count(tag) from temp_view group by tag").show(10)
   //orderby
   sparkSession.sql("select tag,count(*) as count from temp_view group by tag order by count desc").show(10)
-
+  //group by & having
+  sparkSession.sql("select tag,count(tag) as count from temp_view group by tag having count>5 order by count ").show(10)
 }
