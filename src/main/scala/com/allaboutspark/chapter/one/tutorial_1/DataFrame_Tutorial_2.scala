@@ -37,5 +37,13 @@ object DataFrame_Tutorial_2 extends App with Context {
   //Print selected columns
   joinedDF.select("Id","CreationDate","Score","AnswerCount","tag" ).show()
 
+  //Join explicit column name and this prints ID column of both dataframes.
+  val joinExplicitDF=dftagCsvSubset.join(dftags,dftagCsvSubset("Id") === dftags("Id"))
+  joinExplicitDF.show(false)
 
+  //inner join
+  val innerJoinDF1=dftagCsvSubset.join(dftags,dftagCsvSubset("Id") === dftags("Id"),"inner")
+  val innerJoinDF2=dftagCsvSubset.join(dftags,Seq("Id"),"inner")
+  innerJoinDF1.show()
+  innerJoinDF2.show()
 }
