@@ -48,14 +48,15 @@ object DataFrame_Joins extends App with Context {
   innerJoinDF2.show()
 
   //left, left_semi and left_anti
-  val leftjoinDF=dftagCsvSubset.join(dftags,Seq("Id"),"left")
-  val leftsemiDF=dftagCsvSubset.join(dftags,Seq("Id"),"left_semi")
-  val leftantiDF=dftagCsvSubset.join(dftags,Seq("Id"),"left_anti")
   println("Left Join")
-  leftjoinDF.show()
+  dftagCsvSubset.join(dftags,Seq("Id"),"left").show()
   println("Left Semi")
-  leftsemiDF.show()
+  dftagCsvSubset.join(dftags,Seq("Id"),"left_semi").show()
   println("Left Anti")
-  leftantiDF.show()
+  dftagCsvSubset.join(dftags,Seq("Id"),"left_anti").show()
+  println("Right Outer")
+  dftagCsvSubset.join(dftags,Seq("Id"),"right_outer").show()
+  println("Getting distinct values of a column")
+  dftags.distinct().show(20)
 
 }
