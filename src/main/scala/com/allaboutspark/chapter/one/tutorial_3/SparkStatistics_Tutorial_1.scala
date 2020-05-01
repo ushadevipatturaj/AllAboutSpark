@@ -32,4 +32,12 @@ object SparkStatistics_Tutorial_1 extends App with Context {
     .join(dfTags, dfTagQuestion_Formatted.col("Id").equalTo(dfTags("Id")))
     .groupBy(dfTagQuestion_Formatted.col("Id"))
     .agg(avg("score"),max("AnswerCount")).show()
+
+  //statistics using describe
+  val dfTag_Describe = dfTagQuestion_Formatted.describe()
+  dfTag_Describe.show()
+
+  //correlation
+  val dfTagCorrelation = dfTagQuestion_Formatted.stat.corr("Score","AnswerCount")
+  println(s"Correlation between score and AnswerCount is  $dfTagCorrelation")
 }
