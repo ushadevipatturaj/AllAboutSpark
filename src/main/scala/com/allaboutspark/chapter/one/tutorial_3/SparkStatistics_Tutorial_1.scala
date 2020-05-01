@@ -27,4 +27,9 @@ object SparkStatistics_Tutorial_1 extends App with Context {
   //dfTagQuestion_Formatted.select("Id").groupBy("Id").count().filter("count >1").show(10)
   dfTagQuestion_Formatted.select( avg("score"),min("score"),max("score"),mean("score"),sum("score")).show()
 
+  //Groupby with statistics
+  dfTagQuestion_Formatted.filter("Id > 400 and Id <=450").filter("OwnerUserId is not null")
+    .join(dfTags, dfTagQuestion_Formatted.col("Id").equalTo(dfTags("Id")))
+    .groupBy(dfTagQuestion_Formatted.col("Id"))
+    .agg(avg("score"),max("AnswerCount")).show()
 }
