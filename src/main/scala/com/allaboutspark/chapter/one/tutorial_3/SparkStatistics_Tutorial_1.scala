@@ -40,4 +40,19 @@ object SparkStatistics_Tutorial_1 extends App with Context {
   //correlation
   val dfTagCorrelation = dfTagQuestion_Formatted.stat.corr("Score","AnswerCount")
   println(s"Correlation between score and AnswerCount is  $dfTagCorrelation")
+
+  //covariance
+  val dfTagCovariance = dfTagQuestion_Formatted.stat.cov("Score","AnswerCount")
+  println(s"Covariance between score and AnswerCount is  $dfTagCovariance")
+
+  //frequent Items
+  val dfTagsFreq = dfTagQuestion_Formatted.stat.freqItems(Seq("Score"))
+  dfTagsFreq.show(10)
+
+  //crosstab
+  val dfTagsCrossTab = dfTagQuestion_Formatted.filter("OwnerUserId>1 and OwnerUserId<20")
+    .stat.crosstab("Score","OwnerUserId")
+  dfTagsCrossTab.show()
+
+
 }
