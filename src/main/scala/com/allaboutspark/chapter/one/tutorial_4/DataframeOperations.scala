@@ -61,4 +61,15 @@ object DataframeOperations extends App with Context {
 
   val dfQuestionDataset: Dataset[Questions] = dfTagQuestionFiltered.map(row => toQuestions(row))
   dfQuestionDataset.foreach(row => println(s"owner userid = ${row.OwnerUserId}, tag = ${row.tag}, creation date = ${row.CreationDate}, score = ${row.Score}"))
+
+  //Creating dataframe from collections
+  val seqData = Seq(
+    1 -> "One",
+    2 -> "two",
+    3-> "Three"
+  )
+
+  val SeqDF = seqData.toDF("Id","Tag")
+  SeqDF.show(10)
+
 }
