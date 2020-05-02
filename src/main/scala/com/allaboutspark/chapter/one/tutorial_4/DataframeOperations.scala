@@ -1,5 +1,7 @@
 package com.allaboutspark.chapter.one.tutorial_4
 
+import java.time.ZonedDateTime
+
 import org.apache.spark.sql.Dataset
 
 object DataframeOperations extends App with Context {
@@ -24,11 +26,39 @@ object DataframeOperations extends App with Context {
     dfTagQuestions.col("OwnerUserId").cast("integer"),
     dfTagQuestions.col("AnswerCount").cast("integer")
   )
-  val dfTagQuestionFiltered = dfTagQuestion_Formatted.filter("Score > 400 and Score <410").join(dfTags,"Id")
+  val dfTagQuestionFiltered = dfTagQuestions.filter("Score > 400 and Score <410").join(dfTags,"Id")
     .select("OwnerUserId", "tag", "CreationDate", "Score").toDF()
-  dfTagQuestionFiltered.show(10)
+  //dfTagQuestionFiltered.show(10)
+  dfTagQuestionFiltered.printSchema()
+
+  //Creating a dataset from dataframe
   import sparkSession.implicits._
   case class Tag(Id:Int, tag: String)
   val dfTagsofTags: Dataset[Tag] = dfTags.as[Tag]
   dfTagsofTags.take(10).foreach(t => println(s"Id is ${t.Id} and Tag is ${t.tag}"))
+
+  //row level parsing, applying map on row level
+
+  case class Questions (OwnerUserId: Int, tag: String, CreationDate: java.sql.Timestamp, Score: Int)
+
+  def toQuestions(row: org.apache.spark.sql.Row) = {
+    val IntOf : String => Option[Int] = {
+      case str if str == "NA" => None
+      case str => Some(str.toInt)
+    }
+
+    val DateOf : String => java.sql.Timestamp = {
+      case str => java.sql.Timestamp.valueOf(ZonedDateTime.parse(str).toLocalDateTime)
+    }
+
+    Questions(
+      OwnerUserId = IntOf(row.getString(0)).getOrElse(-1),
+      tag = row.getString(1),
+      CreationDate = row.getTimestamp(2),
+      Score = row.getInt(3)
+    )
+  }
+
+  val dfQuestionDataset: Dataset[Questions] = dfTagQuestionFiltered.map(row => toQuestions(row))
+  dfQuestionDataset.foreach(row => println(s"owner userid = ${row.OwnerUserId}, tag = ${row.tag}, creation date = ${row.CreationDate}, score = ${row.Score}"))
 }
