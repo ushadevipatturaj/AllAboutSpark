@@ -2,6 +2,7 @@ package com.allaboutspark.chapter.one.tutorial_4
 
 import java.time.ZonedDateTime
 
+import org.apache.spark.sql.functions._
 import org.apache.spark.sql.Dataset
 
 object DataframeOperations extends App with Context {
@@ -64,12 +65,29 @@ object DataframeOperations extends App with Context {
 
   //Creating dataframe from collections
   val seqData = Seq(
-    1 -> "One",
-    2 -> "two",
-    3-> "Three"
+    1 -> "1_One",
+    2 -> "2_Two",
+    3-> "3_Three"
   )
 
   val SeqDF = seqData.toDF("Id","Tag")
   SeqDF.show(10)
+
+  //Union of 2 dataframes
+  val dfUnion = dfTags.union(SeqDF)
+  dfUnion.filter("Id >=1 and Id<6").show(25)
+
+  //Intersection of 2 dataframes
+  val dfIntersection = dfUnion.intersect(SeqDF)
+  dfIntersection.show(10)
+
+  val dfSplit = SeqDF.withColumn("temp", split($"Tag","_"))
+    .select(
+      $"Id",
+      $"Tag",
+      $"temp".getItem(0).as("Alias Name"),
+      $"temp".getItem(1).as("Numerical value")
+    ).drop("temp")
+  dfSplit.show()
 
 }
