@@ -14,4 +14,5 @@ object SparkFunctions_Tutorial_1 extends App with Context {
   val (columnNames,columnDatatype) = dfDonuts.dtypes.unzip
   println(s"Column Names are :${columnNames.mkString(",")}")
   println(s"Column Datatypes are :${columnDatatype.mkString(",")}")
+
 }
