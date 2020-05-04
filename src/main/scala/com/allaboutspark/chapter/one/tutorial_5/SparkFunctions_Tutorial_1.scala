@@ -28,8 +28,8 @@ object SparkFunctions_Tutorial_1 extends App with Context {
   dfExplode.select(
     $"StackOverflow.tag.Id" as "Id",
     $"StackOverflow.tag.author" as "Author",
-    $"StackOverflow.tag.frameworks.id" as "Framework Id",
-    $"StackOverflow.tag.frameworks.name" as "Framework Name",
+    $"StackOverflow.tag.frameworks.id" as "Framework_Id",
+    $"StackOverflow.tag.frameworks.name" as "Framework_Name",
     $"StackOverflow.tag.name" as "Tag Name"
   ).show(truncate = false)
 
@@ -43,4 +43,6 @@ object SparkFunctions_Tutorial_1 extends App with Context {
   val dfDonutInventory = dfDonut.join(dfInventory,dfDonut("Id") === dfInventory("Id"),"inner")
   dfDonutInventory.show()
 
+  //validating whether the json array column contains a value
+  dfExplode.select("*").where(array_contains($"Framework_Name","Play Framework")).show()
 }
