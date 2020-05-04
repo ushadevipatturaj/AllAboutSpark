@@ -25,13 +25,21 @@ object SparkFunctions_Tutorial_1 extends App with Context {
   val dfExplode = dfJSON.select(explode($"stackoverflow") as "StackOverflow")
   dfExplode.printSchema()
 
-  dfExplode.select(
+  val dfExplode_renamed =dfExplode.select(
     $"StackOverflow.tag.Id" as "Id",
     $"StackOverflow.tag.author" as "Author",
-    $"StackOverflow.tag.frameworks.id" as "Framework_Id",
-    $"StackOverflow.tag.frameworks.name" as "Framework_Name",
-    $"StackOverflow.tag.name" as "Tag Name"
-  ).show(truncate = false)
+    $"StackOverflow.tag.frameworks.id" as "framework_id",
+    $"StackOverflow.tag.frameworks.name" as "framework_name",
+    $"StackOverflow.tag.name" as "Tag_Name"
+  )
+    dfExplode_renamed.show(truncate = false)
+
+  //validating whether the json array column contains a value
+  //dfExplode.select("*").where(array_contains($"Framework_Name","Play Framework")).show()
+  dfExplode_renamed
+    .select("*")
+    .where(array_contains($"framework_name","Play Framework"))
+    .show(truncate = false)
 
   //concatenating 2 dataframes using join
   val donut = Seq((111,"Plain Donut",1.50),(222,"Glazed Donut",2.50),(333,"Chocolate Donut",2.20))
@@ -43,6 +51,9 @@ object SparkFunctions_Tutorial_1 extends App with Context {
   val dfDonutInventory = dfDonut.join(dfInventory,dfDonut("Id") === dfInventory("Id"),"inner")
   dfDonutInventory.show()
 
-  //validating whether the json array column contains a value
-  dfExplode.select("*").where(array_contains($"Framework_Name","Play Framework")).show()
+  //validating whether a column exists
+  val IsFound = dfDonut.columns.contains("Price")
+  println(s"Is dfDonut has the Price column? : $IsFound")
+
+
 }
