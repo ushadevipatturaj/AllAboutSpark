@@ -33,4 +33,14 @@ object SparkFunctions_Tutorial_1 extends App with Context {
     $"StackOverflow.tag.name" as "Tag Name"
   ).show(truncate = false)
 
+  //concatenating 2 dataframes using join
+  val donut = Seq((111,"Plain Donut",1.50),(222,"Glazed Donut",2.50),(333,"Chocolate Donut",2.20))
+  val dfDonut = sparkSession.createDataFrame(donut).toDF("Id","Donut Name","Price")
+
+  val inventory = Seq((111,10),(222,20),(333,30))
+  val dfInventory = sparkSession.createDataFrame(inventory).toDF("Id","Stock")
+
+  val dfDonutInventory = dfDonut.join(dfInventory,dfDonut("Id") === dfInventory("Id"),"inner")
+  dfDonutInventory.show()
+
 }
