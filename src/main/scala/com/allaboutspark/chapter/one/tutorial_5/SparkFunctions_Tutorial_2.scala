@@ -68,4 +68,16 @@ object SparkFunctions_Tutorial_2 extends App with Context{
     .withColumn("SHA2",sha2($"DonutName",256))
 
   dfHashing.show(truncate = false)
+  //DataFrame String Operations
+  val dfStringFunctions = dfDonuts2.withColumn("Instr" ,instr($"DonutName","Donut"))
+      .withColumn("Length",length($"DonutName"))
+      .withColumn("trim",trim($"DonutName"))
+      .withColumn("Ltrim",ltrim($"DonutName"))
+      .withColumn("Rtrim",rtrim($"DonutName"))
+      .withColumn("Reverse",reverse($"DonutName"))
+      .withColumn("SubString",substring($"DonutName",0,5))
+      .withColumn("IsNull",isnull($"DonutName"))
+      .withColumn("ConcatWs",concat_ws("-",$"DonutName",$"Price"))
+      .withColumn("InitCap",$"DonutName")
+  dfStringFunctions.show()
 }
