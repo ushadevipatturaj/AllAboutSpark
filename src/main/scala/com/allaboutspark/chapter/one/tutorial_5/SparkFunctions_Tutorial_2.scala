@@ -46,5 +46,19 @@ object SparkFunctions_Tutorial_2 extends App with Context{
   val secondColumn = dfDonuts1.first().getAs[Double]("Price")
   println(s"First column value of the second row is $secondColumn")
 
+  //Formatting the columns
+  val donuts2 = Seq(("Plain Donut",2.00,"2020-04-05"),("Vanilla Donut",2.50,"2020-05-05"),("Glazed Donut",3.50,"2020-12-05"))
+  val dfDonuts2 = sparkSession.createDataFrame(donuts2)
+    .toDF("DonutName","Price","Date")
+  val dfDonutFormatted = dfDonuts2.withColumn("Formatted_Price", format_number($"Price",2))
+    .withColumn("Formatted_String", format_string("New %s", $"DonutName"))
+    .withColumn("Upper_Donut",upper($"DonutName"))
+    .withColumn("Lower_Donut",lower($"DonutName"))
+    .withColumn("Date_Formatted",date_format(to_date($"Date","yyyy-dd-MM"),"yyyyMMdd"))
+    .withColumn("Day_of_Purchase",dayofmonth($"Date"))
+    .withColumn("Month_of_Purchase",month($"Date"))
+    .withColumn("Year_of_Purchase",year($"Date"))
+
+  dfDonutFormatted.show()
 
 }
