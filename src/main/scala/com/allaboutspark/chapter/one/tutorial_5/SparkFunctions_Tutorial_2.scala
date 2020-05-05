@@ -80,4 +80,12 @@ object SparkFunctions_Tutorial_2 extends App with Context{
       .withColumn("ConcatWs",concat_ws("-",$"DonutName",$"Price"))
       .withColumn("InitCap",$"DonutName")
   dfStringFunctions.show()
+
+  //Drop null values
+  val donuts3 = Seq(("Plain Donut",2.00),("Vanilla Donut",2.50),("Glazed Donut",3.50),(null,1.00))
+  val dfDonuts_withNull = sparkSession.createDataFrame(donuts3).toDF("DonutName","Price")
+  dfDonuts_withNull.show()
+
+  val dfDonuts_withoutNull = dfDonuts_withNull.na.drop()
+  dfDonuts_withoutNull.show()
 }
