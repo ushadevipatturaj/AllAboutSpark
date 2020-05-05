@@ -61,4 +61,11 @@ object SparkFunctions_Tutorial_2 extends App with Context{
 
   dfDonutFormatted.show()
 
+  //Hashing a column
+  val dfHashing = dfDonuts2.withColumn("Hash",hash($"DonutName"))
+    .withColumn("MD5",md5($"DonutName"))
+    .withColumn("SHA1",sha1($"DonutName"))
+    .withColumn("SHA2",sha2($"DonutName",256))
+
+  dfHashing.show(truncate = false)
 }
